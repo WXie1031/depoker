@@ -1,0 +1,14 @@
+{
+  "name": "lan-holdem",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A zero-dependency LAN Texas Hold'em game with room codes, bots, and a Mahjong-Soul-inspired UI.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  }
+}

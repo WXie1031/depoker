@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>局域网德扑 · LAN Hold'em</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='48' font-size='48'%3E%E2%99%A0%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="page-bg" aria-hidden="true"></div>
+  <main id="app">
+    <section id="landing" class="glass-panel landing-panel">
+      <div class="brand-mark">♠</div>
+      <h1>局域网德扑</h1>
+      <p class="subtitle">和同一 Wi-Fi 下的朋友输入同一个四位房间号，即可开始一局国际通用规则的无限注德州扑克。</p>
+      <form id="join-form" autocomplete="off">
+        <label>
+          <span>昵称</span>
+          <input id="name-input" maxlength="12" placeholder="你的名字" required>
+        </label>
+        <label>
+          <span>房间号</span>
+          <input id="room-input" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="0000" required>
+        </label>
+        <button class="primary-button" type="submit">🚪 进入房间</button>
+      </form>
+      <p id="landing-message" class="form-message" role="status"></p>
+      <dl class="feature-list">
+        <div><dt>👥 2-10 人</dt><dd>局域网实时对局</dd></div>
+        <div><dt>🤖 机器人</dt><dd>可配置 AI 玩家</dd></div>
+        <div><dt>🏠 房主控制</dt><dd>踢人、开局、参数</dd></div>
+      </dl>
+    </section>
+
+    <section id="lobby" class="glass-panel lobby-panel hidden">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">房间大厅</p>
+          <h2 id="lobby-room-code">0000</h2>
+        </div>
+        <div class="header-actions">
+          <button id="copy-room" class="icon-button" title="复制房间号">📋</button>
+          <button data-command="leave" class="ghost-button">🚪 离开</button>
+        </div>
+      </header>
+
+      <div class="lobby-grid">
+        <section class="lobby-card">
+          <h3>👥 玩家</h3>
+          <ul id="lobby-players" class="player-list"></ul>
+          <div class="owner-controls">
+            <div class="bot-control">
+              <span>🤖 机器人</span>
+              <div class="stepper">
+                <button data-command="bot-dec" aria-label="减少机器人">−</button>
+                <output id="bot-count">0</output>
+                <button data-command="bot-inc" aria-label="增加机器人">+</button>
+              </div>
+            </div>
+            <button data-command="start" class="primary-button wide-button">🎴 开始对局</button>
+          </div>
+        </section>
+
+        <section class="lobby-card">
+          <h3>⚙️ 房间设置</h3>
+          <form id="config-form" class="config-form">
+            <label><span>初始筹码</span><input id="starting-stack" type="number" min="100" max="1000000" step="100"></label>
+            <label><span>小盲</span><input id="small-blind" type="number" min="1" max="100000"></label>
+            <label><span>大盲</span><input id="big-blind" type="number" min="1" max="100000"></label>
+            <label><span>机器人风格</span>
+              <select id="bot-style">
+                <option value="tight">稳健</option>
+                <option value="balanced">均衡</option>
+                <option value="aggressive">激进</option>
+              </select>
+            </label>
+            <button class="ghost-button" type="submit">💾 保存设置</button>
+          </form>
+          <p class="help-text">设置在开局前生效；对局中仅可踢人或离开。</p>
+        </section>
+      </div>
+    </section>
+
+    <section id="game" class="game-shell hidden">
+      <header class="game-topbar glass-panel">
+        <div class="room-chip">🏠 <span id="game-room-code">0000</span></div>
+        <div id="phase-chip" class="phase-chip">等待</div>
+        <div class="top-actions">
+          <button data-command="leave" class="ghost-button compact">🚪 离开</button>
+        </div>
+      </header>
+
+      <div class="game-layout">
+        <section class="table-shell glass-panel">
+          <div id="poker-table" class="poker-table">
+            <div class="table-inner">
+              <div class="pot-area">
+                <div class="pot-label">💰 底池</div>
+                <div id="pot-value" class="pot-value">0</div>
+              </div>
+              <div id="board-cards" class="board-cards"></div>
+              <div id="result-banner" class="result-banner hidden"></div>
+            </div>
+            <div id="seat-layer" class="seat-layer"></div>
+          </div>
+        </section>
+
+        <aside class="side-panel glass-panel">
+          <div class="side-panel-header">
+            <h3>🧾 牌局记录</h3>
+            <span class="log-hint">按住上下拖拉</span>
+          </div>
+          <ul id="hand-log" class="hand-log"></ul>
+        </aside>
+      </div>
+
+      <footer id="action-bar" class="action-bar glass-panel">
+        <div id="viewer-status" class="viewer-status"></div>
+        <div id="action-buttons" class="action-buttons"></div>
+      </footer>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
